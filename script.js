@@ -38,4 +38,4 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   return li;
 };
 
-window.onload = () => { }; // 1° commit
+window.onload = () => { }; 
