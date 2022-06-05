@@ -1,5 +1,5 @@
-const items = document.querySelector('.cart__items');
-const cartItems = document.querySelector('.items');
+const cartItems = document.querySelector('.cart__items');
+const items = document.querySelector('.items');
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -42,25 +42,30 @@ const createCartItemElement = ({ id: sku, title: name, price: salePrice }) => {
 };
 
 const createList = async () => {
-fetchProducts('computador')
-  .then((products) => {
-    products.results
-      .forEach((element) => {
-        cartItems.appendChild(createProductItemElement(element));
-      });
-  });
+  const loading = document.createElement('span');
+  loading.innerHTML = 'carregando...';
+  loading.className = 'loading';
+  items.appendChild(loading);
+  fetchProducts('computador')
+    .then((products) => {
+      document.querySelector('.loading').remove();
+      products.results
+        .forEach((element) => {
+          items.appendChild(createProductItemElement(element));
+        });
+    });  
 };  
 
 const createCartList = async () => {
-cartItems.addEventListener('click', (e) => {
-  if (e.target.classList.contains('item__add')) {
-    const productDetails = getSkuFromProductItem(e.target.parentElement);
-    fetchItem(productDetails)
-      .then((product) => {
-        items.appendChild(createCartItemElement(product));
-      });
-  }
-});
+  items.addEventListener('click', (e) => {
+    if (e.target.classList.contains('item__add')) {
+      const productDetails = getSkuFromProductItem(e.target.parentElement);
+      fetchItem(productDetails)
+        .then((product) => {
+          cartItems.appendChild(createCartItemElement(product));
+        });
+    }
+  });
 };
 
 const removeAllCart = () => {
